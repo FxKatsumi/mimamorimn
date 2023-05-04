@@ -19,7 +19,7 @@ red = (0,0,255)
 
 expand_rate = 1.5 # 拡大率
 # face_threshold = 0.7 # 顔閾値
-face_threshold = 0.9 # 顔閾値
+face_threshold = 0.8 # 顔閾値
 
 # 顔検出のAI
 # image_size: 顔を検出して切り取るサイズ
