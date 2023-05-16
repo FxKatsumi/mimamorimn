@@ -5,7 +5,7 @@ from streamlit_webrtc import webrtc_streamer
 import av
 import cv2
 from facenet_pytorch import MTCNN, InceptionResnetV1
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 
 from common.header import Face_ID_face, Face_ID_faceid, Face_ID_faceid_reg
 
@@ -337,7 +337,7 @@ def appmain_faceid_reg():
                 mode = 1 # 登録ボタン
                 st.session_state.mode = mode
 
-    webrtc_ctx = webrtc_streamer(
+    webrtc_streamer(
         key="video",
         video_frame_callback=callback_faceid_reg,
         rtc_configuration={
@@ -348,7 +348,7 @@ def appmain_faceid_reg():
 # メイン
 def appmain(id):
 
-    st.title("みまもりくん")
+    st.title("みまもりくん 0.2")
 
     if id == Face_ID_face: # 顔検知？
         appmain_face()
