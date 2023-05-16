@@ -83,6 +83,7 @@ FaceDatas = []
 
 # 顔データ読み込み
 def FaceDataRead():
+    ret = 0
     try:
         # 顔データフォルダー検索
         folderfiles = os.listdir(face_data_path)
@@ -93,10 +94,13 @@ def FaceDataRead():
         for fname in files:
             # 顔データ追加
             FaceDatas.append(FaceDataClass(fname))
+            ret += 1
 
     except Exception as e:
         # print('FaceDataRead:', e)
         pass
+
+    return ret
 
 # コサイン類似度算出
 def cos_similarity(p1, p2):
@@ -288,7 +292,7 @@ def appmain_faceid():
     global mtcnn
     global resnet
 
-    st.subheader('＜顔認識＞')
+    # st.subheader('＜顔認識＞')
 
     # 顔の検出器を作成
     face_cascade = cv2.CascadeClassifier(cascadePath)
@@ -303,7 +307,9 @@ def appmain_faceid():
     resnet = InceptionResnetV1(pretrained='vggface2').eval()
 
     # 顔データ読み込み
-    FaceDataRead()
+    cnt = FaceDataRead()
+
+    st.subheader('＜顔認識＞ ' + str(cnt) + '件')
 
     webrtc_streamer(
         key="video",
@@ -352,7 +358,7 @@ def appmain_faceid_reg():
 # メイン
 def appmain(id):
 
-    st.title("みまもりくん 0.2")
+    st.title("みまもりくん")
 
     if id == Face_ID_face: # 顔検知？
         appmain_face()
