@@ -324,9 +324,6 @@ def appmain_faceid_reg():
     # 顔の検出器を作成
     face_cascade = cv2.CascadeClassifier(cascadePath)
 
-    # # 顔データ読み込み
-    # FaceDataRead()
-
     # 状態表示
     st.info("アルファベットで名前を入力し、STARTボタンで映像を表示した後、登録する顔が映ったときに登録ボタンを押してください")
 
