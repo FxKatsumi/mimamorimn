@@ -14,7 +14,10 @@ cascadePath = "./haarcascade_frontalface_alt.xml"
 # 顔データパス名
 face_data_path = "./faceimage"
 
-red = (0,0,255) # 色       
+# 色
+col_red = (0,0,255) 
+col_green =(0,255,0)
+
 expand_rate = 1.5 # 拡大率
 face_threshold = 0.7 # 顔閾値
 
@@ -166,7 +169,7 @@ def callback_face(frame):
     #顔を四角で囲む
     for (x,y,w,h) in face_list:
         #赤色の枠で囲む
-        cv2.rectangle(img, (x,y), (x+w,y+h), red, 1)
+        cv2.rectangle(img, (x,y), (x+w,y+h), col_red, 1)
 
     #person_cnt = len(face_list)
 
@@ -187,9 +190,6 @@ def callback_faceid(frame):
 
     #顔を四角で囲む
     for (x,y,w,h) in face_list:
-        #赤色の枠で囲む
-        cv2.rectangle(img, (x,y), (x+w,y+h), red, 1)
-
         # クリップ拡大
         (x2, y2, w2, h2) = clipExpand(x,y,w,h, img_height, img_width)
         #顔のみ切り取る
@@ -198,12 +198,19 @@ def callback_faceid(frame):
         # 顔データID変換（イメージ）
         fid = GetFaceIDImage(trim_face)
 
+        col = col_green
         if fid is not None: # 顔検出あり？
             # 顔認識
             facename = faceRecognition(fid)
 
+            if facename != '???': # 登録あり？
+                col = col_red
+
             # 画像に名前を描画
-            cv2.putText(img, facename, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, red, 2)
+            cv2.putText(img, facename, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 1, col, 2)
+
+        #枠で囲む
+        cv2.rectangle(img, (x,y), (x+w,y+h), col, 1)
 
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
@@ -228,7 +235,7 @@ def callback_faceid_reg(frame):
         for (x,y,w,h) in face_list:
             if mode == 0: # 登録ボタンが押されていない
                 #赤色の枠で囲む
-                cv2.rectangle(img, (x,y), (x+w,y+h), red, 1)
+                cv2.rectangle(img, (x,y), (x+w,y+h), col_red, 1)
 
             elif mode == 1: # 登録ボタンが押された
                 # クリップ拡大
@@ -240,7 +247,7 @@ def callback_faceid_reg(frame):
                 cv2.imwrite(os.path.join(face_data_path, outfile + ".jpg"), trim_face)
 
                 #赤色の枠で囲む
-                cv2.rectangle(img, (x,y), (x+w,y+h), red, 1)
+                cv2.rectangle(img, (x,y), (x+w,y+h), col_red, 1)
 
                 mode = 2 # 完了
 
@@ -248,7 +255,7 @@ def callback_faceid_reg(frame):
 
             else: # 完了
                 #赤色の枠で囲む
-                cv2.rectangle(img, (x,y), (x+w,y+h), red, 1)
+                cv2.rectangle(img, (x,y), (x+w,y+h), col_red, 1)
 
         return av.VideoFrame.from_ndarray(img, format="bgr24")
 
